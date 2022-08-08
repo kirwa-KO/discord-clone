@@ -1,0 +1,14 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+.messages {
+	border: 2px solid #343a40;
+	height: 200px;
+	overflow-y: scroll;
+}
