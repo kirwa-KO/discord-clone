@@ -1,0 +1,1 @@
+export const SaltOrRounds: number = 10;

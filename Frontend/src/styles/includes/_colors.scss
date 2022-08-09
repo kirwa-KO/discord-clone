@@ -1,0 +1,18 @@
+$main-color: #36393F;
+$dark-color: hsl(216,7.2%,13.5%);
+$light-dark-color: #303136;
+$gray-color: rgb(150, 152, 157);
+$purble-color: #5865F2;
+$blue-color: #03AFF4;
+
+.white-color {
+	color: #fff !important;
+}
+
+.gray-color {
+	color: $gray-color !important;
+}
+
+.blue-color {
+	color: $blue-color !important;
+}

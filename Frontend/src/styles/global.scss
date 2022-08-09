@@ -1,6 +1,15 @@
+@import "./includes/colors";
+@import "./includes/backgrounds";
+@import "./includes/spacing";
+@import "./includes/inputs";
+@import "./includes/buttons";
+
 body {
 	margin: 0;
 	padding: 0;
+	@extend .main-bg;
+	height: 100vh;
+	@extend .white-color;
 }
 
 * {
@@ -11,4 +20,30 @@ body {
 	border: 2px solid #343a40;
 	height: 200px;
 	overflow-y: scroll;
+}
+
+
+.line-sperator {
+	height: 2px;
+    width: 32px;
+    border-radius: 1px;
+    background-color: red;
+	border-radius: 1px;
+	background-color:  rgba(85, 85, 86, 1);
+}
+
+.online {
+	background-color: #379956;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.chevron-right {
+	width: 15px;
+    transform: rotate(-90deg);
 }

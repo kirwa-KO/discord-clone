@@ -1,0 +1,26 @@
+
+
+.main-input {
+	background-color: #40444B !important;
+	border: none !important;
+	color: white !important;
+	border-radius: 8px !important;
+}
+
+.dark-input {
+	background-color: $dark-color !important;
+	height: 46px !important;
+	border-radius: 4px !important;
+}
+
+.dark-input,
+.main-input {
+	border: none !important;
+	color: white !important;
+}
+
+.dark-input:focus,
+.main-input:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}

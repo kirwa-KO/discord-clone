@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Message, MessageDocument } from './schemas/message.schema';
+import { Message, MessageDocument } from './chat/message/schemas/message.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Room, RoomDocument } from './schemas/room.schema';
-import { User, UserDocument } from './schemas/user.schema';
+import { Room, RoomDocument } from './chat/room/schemas/room.schema';
+import { User, UserDocument } from './user/schemas/user.schema';
 
 @Injectable()
 export class AppService {
@@ -18,22 +18,10 @@ export class AppService {
 		sendByname: String,
 		roomName: any,
 	): Promise<any> {
-		// const room = await this.getRoom(roomName.id, roomName.label);
 		const room = await this.getRoomByName(roomName.label);
 
 		if (!room) {
 			throw new Error('Room not found');
-			// const newRoom = await this.createRoom(
-			// 	roomName.label,
-			// 	sendByname,
-			// 	sendByname,
-			// );
-			// const newMessage = new this.messageModel({
-			// 	message: messageContent,
-			// 	sendBy: sendByname,
-			// 	room: newRoom._id,
-			// });
-			// return newMessage.save();
 		}
 
 		let createdMessage = new this.messageModel({
@@ -78,7 +66,7 @@ export class AppService {
 	}
 
 	async getRooms(): Promise<RoomDocument[]> {
-		return this.roomModel.find({ isPrivateDm: false });
+		return this.roomModel.find({ isPrivateDm: false }).populate("members");
 	}
 
 	async getRoomByName(roomName: String): Promise<RoomDocument> {

@@ -1,42 +1,133 @@
-import { useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useLocalStorage from "../hooks/useLocalStorage";
 
-const Login: React.FC<{
-	onSubmitId: (id: string) => void;
-}> = ({ onSubmitId }) => {
+const Login: React.FC = () => {
 
-	const idRef = useRef<HTMLInputElement>(null);
+	const [userInfo, setUserInfo] = useLocalStorage("user");
 
-	const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+	const navigate = useNavigate();
+
+	if (userInfo) {
+		navigate("/");
+	}
+
+	const usernameRef = useRef<HTMLInputElement>(null);
+	const passwordRef = useRef<HTMLInputElement>(null);
+
+	const [isForLogin, setIsForLogin] = useState(true);
+
+	const onSubmitLoginRegister = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const inputId = idRef.current!.value;
-		onSubmitId(inputId);
-	}
+		const username = usernameRef.current!.value;
+		const password = passwordRef.current!.value;
 
-	const createNewIdHandler = () => {
-		const generatedId = uuidv4().substr(0, 5);
-		onSubmitId(generatedId);
-	}
+		let linkToSend =
+			"http://localhost:5000/api/auth/" +
+			(isForLogin ? "login" : "register");
+
+		fetch(linkToSend, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				username: username,
+				password: password,
+			}),
+		})
+			.then((res) => {
+				return res.json();
+			})
+			.then((data) => {
+				if (isForLogin === false) setIsForLogin(true);
+				else {
+					setUserInfo(data);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const switchSingInUpHandler = () => {
+		setIsForLogin(!isForLogin);
+	};
 
 	return (
-		<div className="container d-flex align-items-center" style={{
-			height: "100vh",
-		}}>
-			<form className="w-100" onSubmit={submitHandler}>
+		<div
+			className="discord-img-bg w-100 d-flex align-items-center justify-content-center"
+			style={{
+				height: "100vh",
+			}}
+		>
+			<form
+				className="w-30 main-bg p-4 rounded"
+				onSubmit={onSubmitLoginRegister}
+			>
+				<h4 className="text-center font-weight-bold">
+					{isForLogin ? "Welcome back!" : "Create an account"}
+				</h4>
+				<p className="gray-color text-center text-12-px">
+					{isForLogin
+						? "We're so excited to see you again!"
+						: "We're exticed to see you joining us"}
+				</p>
 				<div className="form-group">
-					<label htmlFor="id-input">
-						Enter your id
+					<label
+						htmlFor="id-input"
+						className="text-12-px gray-color font-weight-bold text-uppercase"
+					>
+						Username
 					</label>
 					<input
 						type="text"
-						className="form-control"
-						id="id-input"
+						className="form-control dark-input"
+						id="username-input"
 						placeholder=""
-						ref={idRef}
+						ref={usernameRef}
 					/>
 				</div>
-				<button className="btn btn-primary">Login</button>
-				<button type="button" onClick={createNewIdHandler} className="btn btn-secondary ml-3">Create new id</button>
+				<div className="form-group">
+					<label
+						htmlFor="id-input"
+						className="text-12-px gray-color font-weight-bold text-uppercase"
+					>
+						Password
+					</label>
+					<input
+						type="password"
+						className="form-control dark-input"
+						id="password-input"
+						placeholder=""
+						ref={passwordRef}
+					/>
+				</div>
+				<button className="btn main-btn w-100 mt-2">
+					{isForLogin ? "Login" : "Register"}
+				</button>
+				<p className="mt-3 m-0 gray-color text-12-px">
+					{isForLogin ? (
+						<>
+							Need an account?{" "}
+							<a
+								href="/#"
+								className="blue-color"
+								onClick={switchSingInUpHandler}
+							>
+								Register
+							</a>
+						</>
+					) : (
+						<a
+							href="/#"
+							className="blue-color"
+							onClick={switchSingInUpHandler}
+						>
+							Already have an account?
+						</a>
+					)}
+				</p>
 			</form>
 		</div>
 	);

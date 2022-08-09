@@ -1,0 +1,21 @@
+
+.main-bg {
+	background-color: $main-color !important;
+}
+
+.dark-bg {
+	background-color: $dark-color !important;
+}
+
+.light-dark-bg {
+	background-color: $light-dark-color !important;
+}
+
+.dark-2-bg {
+	background-color: hsl(220,6.8%,17.3%) !important;
+}
+
+.discord-img-bg {
+	background-image: url("../../../src/assets/backgrounds/login.webp");
+	background-size: cover;
+}

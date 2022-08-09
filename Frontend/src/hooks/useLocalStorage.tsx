@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-const PREFIX = "whatsapp-clone";
+const PREFIX = "discord-clone";
 
 const useLocalStorage = (
-	key: String,
-	intialValue?: String | Function
-): [value: String, setValue: (id: string) => void] => {
+	key: string,
+	intialValue?: string | Function
+): [value: any, setValue: (info: string) => void] => {
 	const keyPrefix = `${PREFIX}-${key}`;
 
 	const [value, setValue] = useState(() => {
