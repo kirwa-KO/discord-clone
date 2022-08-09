@@ -18,6 +18,9 @@ export class Room {
 
 	@Prop({ type: [{ type: mongoose.Types.ObjectId, ref: "Message", default: [] }] })
 	messages?: MessageDocument[];
+
+	@Prop({ required: true, default: false })
+	isPrivateDm: Boolean;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

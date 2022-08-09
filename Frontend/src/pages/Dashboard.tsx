@@ -56,10 +56,10 @@ const Dashboard: React.FC<{ id: String }> = ({ id }) => {
 	};
 
 	const sendRoomHandler = () => {
-		// socket.emit("joinRoom", {
-		// 	room: roomInput,
-		// 	username: id,
-		// });
+		socket.emit("joinRoom", {
+			room: roomInput,
+			username: id,
+		});
 	};
 
 	const changeChatHandler = (chatLabel: String, chatId: String, isPrivateDm: Boolean) => {

@@ -20,7 +20,7 @@ import getRoomName from './helpers/getRoomName';
 export class AppGateway implements OnGatewayConnection {
 	constructor(private readonly appService: AppService) {}
 
-	@WebSocketServer() server: Server;
+	// @WebSocketServer() server: Server;
 
 	public async handleConnection(client: Socket): Promise<any> {
 		const rooms = await this.appService.getRooms();
@@ -48,10 +48,10 @@ export class AppGateway implements OnGatewayConnection {
 			username: string;
 		},
 	): void {
-		console.log(payload);
-
+		
 		if (payload.room.isPrivateDm === true) {
 			const roomName = getRoomName(payload.room.id, payload.username);
+			payload.room.label = roomName;
 			console.log(roomName);
 		}
 
@@ -70,12 +70,12 @@ export class AppGateway implements OnGatewayConnection {
 		}
 	}
 
-	// @SubscribeMessage('joinRoom')
-	// handleJoinRoom(client: Socket, payload: {room: string, username: string}): void {
-	// 	this.appService.joinRoom(payload.room, payload.username);
-	// 	client.join(payload.room);
-	// 	client.emit("joinedRoom", payload.room);
-	// }
+	@SubscribeMessage('joinRoom')
+	handleJoinRoom(client: Socket, payload: {room: string, username: string}): void {
+		this.appService.joinRoom(payload.room, payload.username);
+		client.join(payload.room);
+		client.emit("joinedRoom", payload.room);
+	}
 
 	@SubscribeMessage('getChatMessages')
 	async handleGetChatMessages(
@@ -89,7 +89,6 @@ export class AppGateway implements OnGatewayConnection {
 	): Promise<any> {
 		if (payload.isPrivateDm === false) {
 			const messages = await this.appService.getMessages(payload.roomId);
-			// console.log(payload);
 			client.join(payload.name);
 			client.emit('joinedRoom', payload.name);
 			client.emit('receivedMessages', messages);
@@ -98,6 +97,7 @@ export class AppGateway implements OnGatewayConnection {
 			const room = await this.appService.getRoomOrCreate(
 				roomName,
 				payload.username,
+				true,
 			);
 			const messages = await this.appService.getMessages(
 				room._id.toString(),

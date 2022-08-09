@@ -22,17 +22,18 @@ export class AppService {
 		const room = await this.getRoomByName(roomName.label);
 
 		if (!room) {
-			const newRoom = await this.createRoom(
-				roomName.label,
-				sendByname,
-				sendByname,
-			);
-			const newMessage = new this.messageModel({
-				message: messageContent,
-				sendBy: sendByname,
-				room: newRoom._id,
-			});
-			return newMessage.save();
+			throw new Error('Room not found');
+			// const newRoom = await this.createRoom(
+			// 	roomName.label,
+			// 	sendByname,
+			// 	sendByname,
+			// );
+			// const newMessage = new this.messageModel({
+			// 	message: messageContent,
+			// 	sendBy: sendByname,
+			// 	room: newRoom._id,
+			// });
+			// return newMessage.save();
 		}
 
 		let createdMessage = new this.messageModel({
@@ -69,14 +70,15 @@ export class AppService {
 	async getRoomOrCreate(
 		roomName: String,
 		username: String,
+		isPrivateDm: Boolean = false,
 	): Promise<RoomDocument> {
 		let foundRoom = await this.roomModel.findOne({ name: roomName });
-		if (!foundRoom) return this.createRoom(roomName, username, username);
+		if (!foundRoom) return this.createRoom(roomName, username, username, isPrivateDm);
 		return foundRoom;
 	}
 
 	async getRooms(): Promise<RoomDocument[]> {
-		return this.roomModel.find();
+		return this.roomModel.find({ isPrivateDm: false });
 	}
 
 	async getRoomByName(roomName: String): Promise<RoomDocument> {
@@ -93,11 +95,13 @@ export class AppService {
 		room: String,
 		createdBy: String,
 		member: String,
+		isPrivateDm: Boolean = false,
 	): Promise<RoomDocument> {
 		const createdRoom = new this.roomModel({
 			name: room,
 			createdBy: createdBy,
 			members: [member],
+			isPrivateDm: isPrivateDm,
 		});
 		return createdRoom.save();
 	}
