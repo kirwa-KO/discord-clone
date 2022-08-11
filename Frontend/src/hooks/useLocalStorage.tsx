@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 
 const PREFIX = "discord-clone";
 
+export const getLocalItem = (key: string) => {
+	const item = localStorage.getItem(`${PREFIX}-${key}`);
+	return item ? JSON.parse(item) : null;
+};
+
 const useLocalStorage = (
 	key: string,
 	intialValue?: string | Function

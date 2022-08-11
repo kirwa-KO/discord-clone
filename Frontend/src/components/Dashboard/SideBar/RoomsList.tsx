@@ -30,7 +30,7 @@ const RoomCard: React.FC<{ room: RoomType, onClick: (room: RoomType) => void; }>
 			className="rounded-circle cursor-pointer"
 			width={48}
 			height={48}
-			src={`https://myanimelist.tech/api/avatar?name=${room.name}`}
+			src={`http://localhost:8080/api/avatar?name=${room.name}`}
 			alt=""
 		/>
 	);

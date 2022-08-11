@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { Document, ObjectId } from "mongoose";
+import { UserDocument } from "src/user/schemas/user.schema";
 import { MessageDocument } from "../../message/schemas/message.schema";
 
 export type RoomDocument = Room & Document<ObjectId>;
@@ -10,16 +11,16 @@ export class Room {
 	@Prop({ required: true, unique: true })
 	name: String;
 
-	@Prop({ required: true })
-	createdBy: String;
+	@Prop({ required: true, type: mongoose.Types.ObjectId, ref: "User" })
+	createdBy: UserDocument;
 
-	@Prop()
-	members?: String[];
+	@Prop({ type: [{ type: mongoose.Types.ObjectId, ref: "User", default: [] }] })
+	members?: UserDocument[];
 
 	@Prop({ type: [{ type: mongoose.Types.ObjectId, ref: "Message", default: [] }] })
 	messages?: MessageDocument[];
 
-	@Prop({ required: true, default: false })
+	@Prop({ required: true, default: false, select: false })
 	isPrivateDm: Boolean;
 }
 

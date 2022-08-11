@@ -138,7 +138,7 @@ const Dashboard: React.FC<{ id: String }> = ({ id }) => {
 									width={40}
 									height={40}
 									className="img-fluid rounded-circle"
-									src={`https://myanimelist.tech/api/avatar?name=${user.username}`}
+									src={`http://localhost:8080/api/avatar?name=${user.username}`}
 									alt="avatr"
 								/>
 								<span className="ml-3 h6 mb-0 font-weight-bold">
@@ -162,7 +162,7 @@ const Dashboard: React.FC<{ id: String }> = ({ id }) => {
 									width={40}
 									height={40}
 									className="img-fluid rounded-circle"
-									src={`https://myanimelist.tech/api/avatar?name=${room.name}`}
+									src={`http://localhost:8080/api/avatar?name=${room.name}`}
 									alt="avatr"
 								/>
 								<span className="ml-3 h6 mb-0 font-weight-bold">

@@ -27,7 +27,7 @@ const MessageCard: React.FC<{
 				width={40}
 				height={40}
 				className="rounded-circle"
-				src="https://myanimelist.tech/api/avatar?name=jdseed"
+				src="http://localhost:8080/api/avatar?name=jdseed"
 				alt=""
 			/>
 			<div>

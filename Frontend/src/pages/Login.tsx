@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { singInUpApi } from "../services/auth";
 
 const Login: React.FC = () => {
-
 	const [userInfo, setUserInfo] = useLocalStorage("user");
 
 	const navigate = useNavigate();
@@ -22,23 +22,7 @@ const Login: React.FC = () => {
 		const username = usernameRef.current!.value;
 		const password = passwordRef.current!.value;
 
-		let linkToSend =
-			"http://localhost:5000/api/auth/" +
-			(isForLogin ? "login" : "register");
-
-		fetch(linkToSend, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				username: username,
-				password: password,
-			}),
-		})
-			.then((res) => {
-				return res.json();
-			})
+		singInUpApi(username, password, isForLogin)
 			.then((data) => {
 				if (isForLogin === false) setIsForLogin(true);
 				else {

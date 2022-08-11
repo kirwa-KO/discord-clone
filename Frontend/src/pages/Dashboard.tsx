@@ -1,4 +1,3 @@
-// import Sidebar from "../components/Dashboard/Sidebar";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import RoomsList from "../components/Dashboard/SideBar/RoomsList";
@@ -6,8 +5,9 @@ import MembersList from "../components/Dashboard/SideBar/MembersList";
 import MainSection from "../components/Dashboard/MainSection/MainSection";
 import { RoomType } from "../types/types";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { getAllRomsApi } from "../services/room";
 
-const socket = io("http://localhost:5000");
+// const socket = io("http://localhost:5000");
 
 const Dashboard: React.FC = () => {
 
@@ -26,54 +26,58 @@ const Dashboard: React.FC = () => {
 	});
 
 	useEffect(() => {
-		socket.on("connect", () => {
-			// setSocketId(socket.id);
-			// console.log(id);
-			socket.emit("addUser", {
-				username: "",
-			});
-		});
-		socket.on("getChats", (rooms, users) => {
-			setRooms(rooms);
-			setUsers(users);
-		});
-		socket.on("receivedMessage", (data) => {
-			console.log(data);
-			setMessages((prevMessages) => [...prevMessages, data]);
-		});
-		socket.on("joinedRoom", (roomName) => {
-			console.log(`Congrats you joined: ${roomName}`);
-		});
-		socket.on("userAdded", user => {
-			// console.log(`user: ${user._id}`);
-			setUserId(user._id);
-		})
-		socket.on("receivedMessages", receivedMessages => {
-			console.log(receivedMessages);
-			setMessages(_ => receivedMessages.map((msg: any) => msg.message));
-		})
+		console.log("useEffect in dahboard");
+		getAllRomsApi()
+			.then(roomsData => console.log(roomsData))
+			.catch(err => console.log(err));
+		// socket.on("connect", () => {
+		// 	// setSocketId(socket.id);
+		// 	// console.log(id);
+		// 	socket.emit("addUser", {
+		// 		username: "",
+		// 	});
+		// });
+		// socket.on("getChats", (rooms, users) => {
+		// 	setRooms(rooms);
+		// 	setUsers(users);
+		// });
+		// socket.on("receivedMessage", (data) => {
+		// 	console.log(data);
+		// 	setMessages((prevMessages) => [...prevMessages, data]);
+		// });
+		// socket.on("joinedRoom", (roomName) => {
+		// 	console.log(`Congrats you joined: ${roomName}`);
+		// });
+		// socket.on("userAdded", user => {
+		// 	// console.log(`user: ${user._id}`);
+		// 	setUserId(user._id);
+		// })
+		// socket.on("receivedMessages", receivedMessages => {
+		// 	console.log(receivedMessages);
+		// 	setMessages(_ => receivedMessages.map((msg: any) => msg.message));
+		// })
 	}, []);
 
-	const sendMessageHandler = () => {
-		socket.emit("sendMessage", {
-			message: messageInput,
-			room: choosenChat,
-			username: userId,
-		});
-		setMessages((prevMessages) => [...prevMessages, messageInput]);
-	};
+	// const sendMessageHandler = () => {
+	// 	socket.emit("sendMessage", {
+	// 		message: messageInput,
+	// 		room: choosenChat,
+	// 		username: userId,
+	// 	});
+	// 	setMessages((prevMessages) => [...prevMessages, messageInput]);
+	// };
 
-	const sendRoomHandler = () => {
-		socket.emit("joinRoom", {
-			room: roomInput,
-			// username: id,
-		});
-	};
+	// const sendRoomHandler = () => {
+	// 	socket.emit("joinRoom", {
+	// 		room: roomInput,
+	// 		// username: id,
+	// 	});
+	// };
 
-	const changeChatHandler = (chatLabel: string, chatId: string, isPrivateDm: Boolean) => {
-		setChoosenChat({ label: chatLabel, id: chatId, isPrivateDm: isPrivateDm });
-		socket.emit("getChatMessages", { name: chatLabel, roomId: chatId, isPrivateDm: isPrivateDm, username: userId });
-	}
+	// const changeChatHandler = (chatLabel: string, chatId: string, isPrivateDm: Boolean) => {
+	// 	setChoosenChat({ label: chatLabel, id: chatId, isPrivateDm: isPrivateDm });
+	// 	socket.emit("getChatMessages", { name: chatLabel, roomId: chatId, isPrivateDm: isPrivateDm, username: userId });
+	// }
 
 	const selectRoomHandler = (room: RoomType) => {
 		console.log(room);

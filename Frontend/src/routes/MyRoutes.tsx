@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import {
 	BrowserRouter as Router,
 	Navigate,
@@ -13,6 +13,7 @@ import { AuthUserType } from "../types/types";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const MyRoutes: React.FC = () => {
+
 	return (
 		<Suspense
 			fallback={

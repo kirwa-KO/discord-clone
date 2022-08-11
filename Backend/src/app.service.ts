@@ -102,7 +102,7 @@ export class AppService {
 			return roomToJoin;
 		}
 
-		foundRoom.members.push(username);
+		// foundRoom.members.push(username);
 		return foundRoom.save();
 	}
 }

@@ -21,7 +21,7 @@ const MembersList: React.FC<{
 						<MemberCard
 							key={user._id}
 							name={user.username}
-							img={`https://myanimelist.tech/api/avatar?name=${user.username}`}
+							img={`http://localhost:8080/api/avatar?name=${user.username}`}
 						/>
 					))
 				}
@@ -32,7 +32,7 @@ const MembersList: React.FC<{
 						width={40}
 						height={40}
 						className="rounded-circle"
-						src="https://myanimelist.tech/api/avatar?name=seed&animeName=One_Punch_Man"
+						src="http://localhost:8080/api/avatar?name=seed&animeName=One_Punch_Man"
 						alt=""
 					/>
 					<div className="d-flex flex-column">
