@@ -28,16 +28,16 @@ export class AppGateway implements OnGatewayConnection {
 		client.emit('getChats', rooms, users);
 	}
 
-	@SubscribeMessage('addUser')
-	async handleAddUser(
-		client: Socket,
-		payload: { username: string },
-	): Promise<any> {
-		const user = await this.appService.createUserIfNotExist(
-			payload.username,
-		);
-		client.emit('userAdded', user);
-	}
+	// @SubscribeMessage('addUser')
+	// async handleAddUser(
+	// 	client: Socket,
+	// 	payload: { username: string },
+	// ): Promise<any> {
+	// 	const user = await this.appService.createUserIfNotExist(
+	// 		payload.username,
+	// 	);
+	// 	client.emit('userAdded', user);
+	// }
 
 	@SubscribeMessage('sendMessage')
 	handleMessage(
@@ -72,7 +72,7 @@ export class AppGateway implements OnGatewayConnection {
 
 	@SubscribeMessage('joinRoom')
 	handleJoinRoom(client: Socket, payload: {room: string, username: string}): void {
-		this.appService.joinRoom(payload.room, payload.username);
+		// this.appService.joinRoom(payload.room, payload.username);
 		client.join(payload.room);
 		client.emit("joinedRoom", payload.room);
 	}

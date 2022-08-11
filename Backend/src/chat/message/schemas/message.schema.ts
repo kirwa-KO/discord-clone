@@ -8,12 +8,12 @@ export type MessageDocument = Message & Document<ObjectId>;
 @Schema({ timestamps: true })
 export class Message {
 	@Prop({ required: true })
-	message: String;
+	content: String;
 
 	@Prop({ required: true, type: mongoose.Types.ObjectId, ref: "User" })
 	sendBy: UserDocument;
 
-	@Prop({ type: [{ type: mongoose.Types.ObjectId, ref: "Room", default: [] }] })
+	@Prop({  type: mongoose.Types.ObjectId, ref: "Room" })
 	room: RoomDocument;
 }
 

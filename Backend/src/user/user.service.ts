@@ -53,4 +53,18 @@ export class UserService {
 
 		return user;
 	}
+
+	async findUserById(id: string): Promise<UserDocument> {
+		const user = await this.userModel.findById(id).exec();
+		if (!user)
+			throw new HttpException(
+				'User Not exist in our database',
+				HttpStatus.BAD_REQUEST,
+			);
+		return user;
+	}
+
+	async getAll(): Promise<UserDocument[]> {
+		return this.userModel.find();
+	}
 }

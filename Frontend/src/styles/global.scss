@@ -47,3 +47,20 @@ body {
 	width: 15px;
     transform: rotate(-90deg);
 }
+
+.active-room {
+	position: relative;
+}
+
+.active-room::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: -8px;
+	width: 4px;
+	height: 90%;
+	background-color: #fff;
+	// opacity: 0.2;
+	border-radius: 10px;
+	transform: translateY(-50%);
+}

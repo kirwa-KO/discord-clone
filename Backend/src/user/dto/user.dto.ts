@@ -7,6 +7,8 @@ import {
 	IsOptional,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
+import { Room } from 'src/chat/room/schemas/room.schema';
+import { Message } from 'src/chat/message/schemas/message.schema';
 
 export class UserDto {
 	@IsString()
@@ -18,6 +20,10 @@ export class UserDto {
 	@IsString()
 	@MinLength(6)
 	password: string;
+
+	rooms?: Room[];
+
+	messages?: Message[];
 }
 
 export class UserDtoUpdate extends PartialType(UserDto) {}

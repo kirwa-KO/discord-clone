@@ -9,6 +9,17 @@ export type RoomType = {
 	messages: string[];
 }
 
+export type MessageType = {
+	_id: string;
+	roomId: string;
+	sendBy: {
+		_id: string;
+		username: string;
+	};
+	content: string;
+	updatedAt: Date;
+}
+
 
 export type UserType = {
 	_id: string;
@@ -21,4 +32,10 @@ export type AuthUserType = {
 	access_token: string;
 	username: string;
 	userId: string;
+}
+
+
+export type ChatType = {
+	_id: string;
+	name: string;
 }

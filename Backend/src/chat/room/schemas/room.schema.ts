@@ -9,7 +9,7 @@ export type RoomDocument = Room & Document<ObjectId>;
 export class Room {
 
 	@Prop({ required: true, unique: true })
-	name: String;
+	name: string;
 
 	@Prop({ required: true, type: mongoose.Types.ObjectId, ref: "User" })
 	createdBy: UserDocument;

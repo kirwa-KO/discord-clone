@@ -7,5 +7,11 @@ export const singInUpApi = (
 ): Promise<any> => {
 	let linkToSend = "/auth/" + (isForLogin ? "login" : "register");
 
-	return axios.post(linkToSend, { username, password, }).then(res => res.data);
+	return axios
+		.post(linkToSend, { username, password })
+		.then((res) => res.data)
+		.catch((err) => {
+			console.log(err);
+			return err;
+		});
 };

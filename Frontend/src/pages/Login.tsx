@@ -8,7 +8,7 @@ const Login: React.FC = () => {
 
 	const navigate = useNavigate();
 
-	if (userInfo) {
+	if (userInfo && typeof userInfo !== "undefined" && userInfo.username) {
 		navigate("/");
 	}
 
@@ -34,7 +34,8 @@ const Login: React.FC = () => {
 			});
 	};
 
-	const switchSingInUpHandler = () => {
+	const switchSingInUpHandler = (e: any) => {
+		e.preventDefault();
 		setIsForLogin(!isForLogin);
 	};
 
