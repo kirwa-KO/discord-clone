@@ -28,6 +28,7 @@ export type UserType = {
 	createdAt: Date;
 	updatedAt: Date;
 	notifications?: number;
+	isOnline?: boolean;
 }
 
 export type AuthUserType = {

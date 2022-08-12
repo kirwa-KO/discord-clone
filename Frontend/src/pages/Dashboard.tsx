@@ -72,6 +72,7 @@ const Dashboard: React.FC = () => {
 		_id: "",
 	});
 	const chatroomref = useRef(choosenChat);
+	const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
 	const addUserNotification = (roomId: string) => {
 		setUsers((prevUsers: any) => {
@@ -160,7 +161,9 @@ const Dashboard: React.FC = () => {
 			})
 			.catch((err) => console.log(err));
 
-		socket.on("connect", () => {});
+		socket.on("connect", () => {
+			socket.emit("AddConnectedUser", { username: userInfo.username });
+		});
 
 		socket.on("joinedDm", ({ messages: privateMessages, receiverId }) => {
 			setMessages((prevMessages) => ({
@@ -194,9 +197,13 @@ const Dashboard: React.FC = () => {
 		});
 
 		socket.on("createdRoom", (roomData) => {
-			console.log(roomData);
+			// console.log(roomData);
 			setRooms((prevRooms: any) => [...prevRooms, roomData]);
 		});
+
+		socket.on("connectedUsers", (onlineUsers) => {
+			setOnlineUsers(onlineUsers);
+		})
 
 	}, []);
 
@@ -340,6 +347,7 @@ const Dashboard: React.FC = () => {
 							username: userInfo.username,
 							id: userInfo.userId,
 						}}
+						onlineUsers={onlineUsers}
 						selectedUserDM={selectedUserDMHandler}
 					/>
 				</div>
