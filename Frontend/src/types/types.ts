@@ -7,6 +7,7 @@ export type RoomType = {
 	createdAt: Date;
 	updatedAt: Date;
 	messages: string[];
+	notifications?: number;
 }
 
 export type MessageType = {
@@ -26,6 +27,7 @@ export type UserType = {
 	username: string;
 	createdAt: Date;
 	updatedAt: Date;
+	notifications?: number;
 }
 
 export type AuthUserType = {

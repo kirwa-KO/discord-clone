@@ -3,7 +3,9 @@ import {
 	OnGatewayConnection,
 	SubscribeMessage,
 	WebSocketGateway,
+	WebSocketServer,
 } from '@nestjs/websockets';
+import { Server } from 'http';
 import { Socket } from 'socket.io';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import getRoomName from 'src/helpers/getRoomName';
@@ -26,6 +28,8 @@ export class ChatGateway implements OnGatewayConnection {
 		private readonly messageService: MessageService,
 	) {}
 
+	@WebSocketServer() server: Server;
+
 	public async handleConnection(client: Socket): Promise<any> {
 		// console.log('Client connected');
 	}
@@ -36,8 +40,6 @@ export class ChatGateway implements OnGatewayConnection {
 		payload: { room: RoomDto; userId: string },
 	): Promise<any> {
 		const { room, userId } = payload;
-		// console.log(room);
-		// console.log(userId);
 		let isMemberInRoom = false;
 		const foundedRoom = await this.roomService.getRoomByName(room.name);
 
@@ -72,7 +74,7 @@ export class ChatGateway implements OnGatewayConnection {
 		);
 
 		client.join(roomName);
-		client.emit('joinedDm', gettedRoom.messages);
+		client.emit('joinedDm', {messages: gettedRoom.messages, receiverId});
 	}
 
 	@SubscribeMessage('joinRoom')
@@ -89,9 +91,12 @@ export class ChatGateway implements OnGatewayConnection {
 			foundedRoom.members.push(user);
 			await foundedRoom.save();
 			client.join(roomName);
-			client.emit('joinedRoom', roomName);
+			client.to(roomName).emit('joinedRoom', {
+				roomName,
+				user,
+			});
 		} else {
-			console.log('Joing room failed because of: Room not found');
+			console.log(`Joing room failed because of: Room [${roomName}] not found`);
 		}
 	}
 
@@ -108,6 +113,8 @@ export class ChatGateway implements OnGatewayConnection {
 		const { content, room, userId, isPrivateDm } = payload;
 
 		let createdMessage: MessageDocument;
+
+		const roomId = room._id;
 
 		if (isPrivateDm === true) {
 			const roomName = getRoomName(payload.room._id, userId);
@@ -130,6 +137,22 @@ export class ChatGateway implements OnGatewayConnection {
 
 		// console.log(createdMessage);
 
-		client.to(room.name).emit('receivedMessage', createdMessage);
+		if (isPrivateDm === true)
+			client.to(room.name).emit('receivedMessage', {createdMessage, roomId: userId, isPrivateDm});
+		else
+			client.to(room.name).emit('receivedMessage', {createdMessage, roomId, isPrivateDm});
+	}
+
+	@SubscribeMessage('createRoom')
+	async handleCreateRoom(
+		client: Socket,
+		payload: { roomName: string; userId: string },
+	): Promise<any> {
+		const { roomName, userId } = payload;
+
+		const createdRoom = await this.roomService.getRoomOrCreate(roomName, userId);
+
+		// client.emit('createdRoom', createdRoom);
+		this.server.emit('createdRoom', createdRoom);
 	}
 }

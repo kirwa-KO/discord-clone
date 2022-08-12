@@ -21,14 +21,20 @@ const MembersList: React.FC<{
 			<div className="d-flex align-items-center flex-grow-1 light-dark-bg overflow-y-scroll flex-column gap-12 pt-4 pb-3 align-items-center px-3">
 				<div className="gray-color font-weight-bold mt-2 mb-4 w-100 text-uppercase"><RightChevronIcon className="chevron-right" /> {choosenChat.name}</div>
 				{
-					users.map((user: UserType) => (
-						<MemberCard
-							onClick={() => selectedUserDM({ name: user.username, _id: user._id })}
-							key={user._id}
-							name={user.username}
-							img={`${process.env.REACT_APP_AVATARS_URL}/api/avatar?name=${user.username}`}
-						/>
-					))
+					users.map((user: UserType) => 
+					{
+						if (user.username === currentUser.username) 
+							return null;
+						return (
+							<MemberCard
+								onClick={() => selectedUserDM({ name: user.username, _id: user._id })}
+								key={user._id}
+								name={user.username}
+								notifications={user.notifications}
+								img={`${process.env.REACT_APP_AVATARS_URL}/api/avatar?name=${user.username}`}
+							/>
+						);
+				})
 				}
 			</div>
 			<div className="justify-content-between dark-2-bg py-3 px-3 d-flex align-items-center">
@@ -53,17 +59,21 @@ const MembersList: React.FC<{
 
 export default MembersList;
 
-const MemberCard: React.FC<{ name: string; img: string, onClick: (user: string) => void }> = ({ name, img, onClick }) => {
+const MemberCard: React.FC<{ notifications: number | undefined, name: string; img: string, onClick: (user: string) => void }> = ({ notifications, name, img, onClick }) => {
 	return (
 		<div className="d-flex align-items-center w-100 justify-content-between cursor-pointer">
 			<div className="d-flex gap-12 align-items-center " onClick={() => {onClick(name)}}>
-				<img
-					width={32}
-					height={32}
-					className="rounded-circle"
-					src={img}
-					alt=""
-				/>
+				<div className="position-relative">
+					{/* <div className="notification-bubble">1</div> */}
+					{ (notifications && notifications > 0) ? <div className="notification-bubble">{notifications}</div> : null }
+					<img
+						width={32}
+						height={32}
+						className="rounded-circle"
+						src={img}
+						alt=""
+					/>
+				</div>
 				<span>{name}</span>
 			</div>
 			<div className="d-flex align-items-center gap-8">

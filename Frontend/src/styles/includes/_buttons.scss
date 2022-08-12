@@ -1,7 +1,13 @@
+.main-btn,
+.danger-btn {
+	color: white !important;
+	font-size: 14px !important;
+}
 
 .main-btn {
 	background-color: $purble-color !important;
-	color: white !important;
-	// font-weight: bold !important;
-	font-size: 14px !important;
+}
+
+.danger-btn {
+	background-color: $danger-color !important;
 }

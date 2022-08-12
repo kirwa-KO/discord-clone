@@ -27,7 +27,6 @@ body {
 	height: 2px;
     width: 32px;
     border-radius: 1px;
-    background-color: red;
 	border-radius: 1px;
 	background-color:  rgba(85, 85, 86, 1);
 }
@@ -48,10 +47,6 @@ body {
     transform: rotate(-90deg);
 }
 
-.active-room {
-	position: relative;
-}
-
 .active-room::before {
 	content: "";
 	position: absolute;
@@ -63,4 +58,45 @@ body {
 	// opacity: 0.2;
 	border-radius: 10px;
 	transform: translateY(-50%);
+}
+
+.notification-bubble {
+	content: "";
+	position: absolute;
+	top: -4px;
+	right: -4px;
+	width: 16px;
+	height: 16px;
+	background-color: $danger-color;
+	border-radius: 50%;
+	font-size: 70%;
+	font-weight: bold;
+	line-height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.create-room-form {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: rgba(0, 0, 0, 0.7);
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	input {
+		padding-left: 1rem;
+		height: 40px;
+	}
+	input,
+	button {
+		width: 30%;
+	}
 }

@@ -22,12 +22,15 @@ const MessageInput: React.FC<{
 					<p className="m-0 font-weight-bold gray-color text-uppercase">
 						You are not member in Room {choosenChat.name}
 					</p>
-					<button className="btn main-btn font-weight-bold text-uppercase" onClick={() => joinRoomHandler()}>
+					<button
+						className="btn main-btn font-weight-bold text-uppercase"
+						onClick={() => joinRoomHandler()}
+					>
 						Join {choosenChat.name}
 					</button>
 				</div>
 			)}
-			{isMemberOfRoom && (
+			{isMemberOfRoom && choosenChat._id !== "" && (
 				<form className="form-group" onSubmit={onSubmitForm}>
 					<input
 						type="text"

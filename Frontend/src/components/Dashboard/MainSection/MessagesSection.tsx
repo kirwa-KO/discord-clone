@@ -8,14 +8,15 @@ const MessagesSection: React.FC<{
 }> = ({ messages }) => {
 	return (
 		<div className="flex-grow-1 m-4 d-flex flex-column gap-12 overflow-y-scroll">
-			{messages.map((message: MessageType) => (
+			{messages.map((message: MessageType, idx) => (
 				<MessageCard
-					key={message._id}
+					key={message._id + "" + idx}
 					time={moment(message.updatedAt).format("MMM D, YYYY [at] HH:mm")}
 					sender={message.sendBy.username}
 					content={message.content}
 				/>
-			))}
+			)
+			)}
 		</div>
 	);
 };
