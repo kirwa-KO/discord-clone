@@ -1,17 +1,26 @@
 import axios from "axios";
 
-export const singInUpApi = (
-	username: string,
-	password: string,
-	isForLogin: boolean
-): Promise<any> => {
-	let linkToSend = "/auth/" + (isForLogin ? "login" : "register");
+// create an axios instance
+const axiosInstance = axios.create({
+	  baseURL: process.env.REACT_APP_API_URL,
+});
 
-	return axios
-		.post(linkToSend, { username, password })
+export const loginApi = (
+	username: string,
+	password: string
+): Promise<any> => {
+	return axiosInstance
+		.post("/auth/login", { username, password })
 		.then((res) => res.data)
-		.catch((err) => {
-			console.log(err);
-			return err;
-		});
+};
+
+
+export const registerApi = (
+	username: string,
+	password: string
+): Promise<any> => {
+
+	return axiosInstance
+		.post("/auth/register", { username, password })
+		.then((res) => res.data)
 };

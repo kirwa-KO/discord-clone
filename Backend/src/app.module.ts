@@ -8,12 +8,6 @@ import { ChatModule } from './chat/chat.module';
 
 @Module({
 	imports: [
-		// MongooseModule.forFeature([
-		// 	{ name: Message.name, schema: MessageSchema },
-		// ]),
-		// MongooseModule.forFeature([
-		// 	{ name: Room.name, schema: RoomSchema },
-		// ]),
 		ConfigModule.forRoot({
 			isGlobal: true,
 			validationSchema: Joi.object({
@@ -31,6 +25,5 @@ import { ChatModule } from './chat/chat.module';
 	],
 	controllers: [],
 	providers: [],
-	// providers: [AppGateway, AppService],
 })
 export class AppModule {}

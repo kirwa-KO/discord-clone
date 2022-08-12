@@ -7,6 +7,10 @@ export const getLocalItem = (key: string) => {
 	return item ? JSON.parse(item) : null;
 };
 
+export const removeLocalItem = (key: string) => {
+	localStorage.removeItem(`${PREFIX}-${key}`);
+};
+
 const useLocalStorage = (
 	key: string,
 	intialValue?: string | Function
@@ -15,7 +19,11 @@ const useLocalStorage = (
 
 	const [value, setValue] = useState(() => {
 		const jsonValue = localStorage.getItem(keyPrefix);
-		if (jsonValue !== null && typeof jsonValue !== 'undefined' && jsonValue !== 'undefined') {
+		if (
+			jsonValue !== null &&
+			typeof jsonValue !== "undefined" &&
+			jsonValue !== "undefined"
+		) {
 			return JSON.parse(jsonValue);
 		}
 		if (typeof intialValue === "function") return intialValue();

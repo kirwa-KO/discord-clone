@@ -8,6 +8,7 @@ import {
 	useLocation,
 } from "react-router-dom";
 import Login from "../pages/Login";
+import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import { AuthUserType } from "../types/types";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -26,6 +27,7 @@ const MyRoutes: React.FC = () => {
 				<Routes>
 					<Route element={<NotRequireAuth />}>
 						<Route path="/login" element={<Login />} />
+						<Route path="/register" element={<Register />} />
 					</Route>
 
 					<Route element={<RequireAuth />}>

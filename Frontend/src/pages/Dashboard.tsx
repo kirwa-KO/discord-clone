@@ -3,13 +3,15 @@ import { io } from "socket.io-client";
 import RoomsList from "../components/Dashboard/SideBar/RoomsList";
 import MembersList from "../components/Dashboard/SideBar/MembersList";
 import { ChatType, MessageType, RoomType, UserType } from "../types/types";
-import useLocalStorage from "../hooks/useLocalStorage";
+import useLocalStorage, { removeLocalItem } from "../hooks/useLocalStorage";
 import { getAllRomsAndUsersApi, getRoomData } from "../services/room";
 import { DM_LABEL } from "../utils/constans";
 import { getAllUsers } from "../services/user";
 import HeaderSection from "../components/Dashboard/MainSection/HeaderSection";
 import MessagesSection from "../components/Dashboard/MainSection/MessagesSection";
 import MessageInput from "../components/Dashboard/MainSection/MessageInput";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const socket = io(`${process.env.REACT_APP_WEBSITE_URL}`);
 
@@ -55,7 +57,7 @@ const createNewMsg = (
 };
 
 const Dashboard: React.FC = () => {
-	const userInfo = useLocalStorage("user")[0];
+	const [userInfo, setUserInfo] = useLocalStorage("user");
 
 	const [messages, setMessages] = useState<{ [key: string]: MessageType[] }>(
 		DUMMY_MESSAGES
@@ -73,6 +75,8 @@ const Dashboard: React.FC = () => {
 	});
 	const chatroomref = useRef(choosenChat);
 	const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+
+	const navigate = useNavigate();
 
 	const addUserNotification = (roomId: string) => {
 		setUsers((prevUsers: any) => {
@@ -211,6 +215,21 @@ const Dashboard: React.FC = () => {
 		chatroomref.current = choosenChat;
 	}, [choosenChat]);
 
+
+	const logoutHandler = () => {
+		socket.emit("logout", {
+			username: userInfo.username,
+			userId: userInfo.userId,
+		});
+
+		toast.success("Logout success !!", {
+			position: toast.POSITION.TOP_CENTER,
+		});
+		
+		removeLocalItem("user");
+		setUserInfo("");
+	}
+
 	const sendMessageHandler = (content: string) => {
 		if (choosenChat.name === DM_LABEL) {
 			socket.emit("sendMessage", {
@@ -286,6 +305,11 @@ const Dashboard: React.FC = () => {
 		});
 	};
 
+	if (userInfo === null || (typeof userInfo === "string" && userInfo === "")) {
+		navigate("/login");
+		return <div>logout....</div>;
+	}
+
 	const selectedUserDMHandler = (user: ChatType) => {
 		setSelectedUserDM(user);
 		setChoosenChat(() => ({ name: DM_LABEL, _id: user._id }));
@@ -349,6 +373,7 @@ const Dashboard: React.FC = () => {
 						}}
 						onlineUsers={onlineUsers}
 						selectedUserDM={selectedUserDMHandler}
+						logoutHandler={logoutHandler}
 					/>
 				</div>
 				<div className="col-9 p-0">

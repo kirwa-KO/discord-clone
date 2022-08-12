@@ -1,37 +1,33 @@
-import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { loginApi } from "../services/auth";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerApi } from "../services/auth";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Login: React.FC = () => {
-	const [userInfo, setUserInfo] = useLocalStorage("user");
-
-	const navigate = useNavigate();
-	if (userInfo && typeof userInfo !== "undefined" && userInfo.username) {
-		navigate("/");
-	}
-
+const Register: React.FC = () => {
 	const usernameRef = useRef<HTMLInputElement>(null);
 	const passwordRef = useRef<HTMLInputElement>(null);
+
+	const navigate = useNavigate();
 
 	const onSubmitLoginRegister = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const username = usernameRef.current!.value;
 		const password = passwordRef.current!.value;
-
-		loginApi(username, password)
+		registerApi(username, password)
 			.then((data) => {
-				setUserInfo(data);
 				console.log(data);
-				toast.success("You login success !!", {
+				toast.success("You Account created success !!", {
 					position: toast.POSITION.TOP_CENTER,
 				});
-				// navigate("/");
+				toast.info("Please login now !!", {
+					position: toast.POSITION.TOP_CENTER,
+				});
+				navigate("/login");
 			})
 			.catch((err) => {
 				console.error(err.response);
-				toast.error(err.response.data.message, {
+				toast.error(err.response.data.message[0], {
 					position: toast.POSITION.TOP_CENTER,
 					pauseOnFocusLoss: false
 				});
@@ -50,10 +46,10 @@ const Login: React.FC = () => {
 				onSubmit={onSubmitLoginRegister}
 			>
 				<h4 className="text-center font-weight-bold">
-					Welcome back!
+					Create an account
 				</h4>
 				<p className="gray-color text-center text-12-px">
-					"We're so excited to see you again!"
+					We're exticed to see you joining us
 				</p>
 				<div className="form-group">
 					<label
@@ -85,14 +81,12 @@ const Login: React.FC = () => {
 						ref={passwordRef}
 					/>
 				</div>
-				<button className="btn main-btn w-100 mt-2">Login</button>
+				<button className="btn main-btn w-100 mt-2">
+					Create account
+				</button>
 				<p className="mt-3 m-0 gray-color text-12-px">
-					Need an account?{" "}
-					<Link
-						to="/register"
-						className="blue-color"
-					>
-						Register
+					<Link to="/login" className="blue-color">
+						Already have an account?
 					</Link>
 				</p>
 			</form>
@@ -100,4 +94,4 @@ const Login: React.FC = () => {
 	);
 };
 
-export default Login;
+export default Register;

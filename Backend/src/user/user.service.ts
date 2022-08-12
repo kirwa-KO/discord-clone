@@ -67,4 +67,15 @@ export class UserService {
 	async getAll(): Promise<UserDocument[]> {
 		return this.userModel.find();
 	}
+
+	async getUserRooms(userId: string): Promise<any> {
+		const user = await this.userModel.findById(userId).populate("rooms");
+		if (!user)
+			throw new HttpException(
+				'User Not exist in our database',
+				HttpStatus.BAD_REQUEST,
+			);
+		return user.rooms;
+	}
+
 }

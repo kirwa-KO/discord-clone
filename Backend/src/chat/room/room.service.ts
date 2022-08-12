@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UserService } from 'src/user/user.service';
 import { RoomDto } from './dto/room.dto';
 import { Room, RoomDocument } from './schemas/room.schema';
 
@@ -8,6 +9,7 @@ import { Room, RoomDocument } from './schemas/room.schema';
 export class RoomService {
 	constructor(
 		@InjectModel(Room.name) private roomModel: Model<RoomDocument>,
+		private readonly userService: UserService,
 	) {}
 
 	async create(roomInfo: RoomDto, creatorId: string): Promise<RoomDocument> {
@@ -15,12 +17,22 @@ export class RoomService {
 			name: roomInfo.name,
 		});
 
+		const user = await this.userService.findUserById(creatorId);
+		if (!user) {
+			throw new HttpException(
+				'User Not exist in our database',
+				HttpStatus.BAD_REQUEST,
+			);
+		}
+
 		if (room) {
 			throw new HttpException(
 				'Room already exists',
 				HttpStatus.BAD_REQUEST,
 			);
 		}
+		user.rooms.push(room);
+		await user.save();
 
 		return this.roomModel.create({
 			...roomInfo,
@@ -78,6 +90,14 @@ export class RoomService {
 			},
 		});
 
+		const user = await this.userService.findUserById(creatorId);
+		if (!user) {
+			throw new HttpException(
+				'User Not exist in our database',
+				HttpStatus.BAD_REQUEST,
+			);
+		}
+
 		if (!room) {
 			room = await this.roomModel.create({
 				name: roomName,
@@ -86,6 +106,9 @@ export class RoomService {
 				isPrivateDm: isPrivate,
 			});
 		}
+
+		user.rooms.push(room);
+		await user.save();
 
 		return room;
 	}

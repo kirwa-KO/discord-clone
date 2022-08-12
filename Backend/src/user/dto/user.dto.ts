@@ -12,13 +12,21 @@ import { Message } from 'src/chat/message/schemas/message.schema';
 
 export class UserDto {
 	@IsString()
-	@MinLength(5)
-	@MaxLength(29)
-	@Matches('^[a-zA-Z0-9][a-zA-Z0-9-]+$')
+	@MinLength(3, {
+		message: 'Username must be at least 3 characters',
+	})
+	@MaxLength(29, {
+		message: 'Username must be at most 29 characters',
+	})
+	@Matches('^[a-zA-Z0-9][a-zA-Z0-9-]+$', "", {
+		message: "Username must be alphanumeric a-Z, 0-9, -",
+	})
 	username: string;
 
 	@IsString()
-	@MinLength(6)
+	@MinLength(6, {
+		message: 'Password must be at least 6 characters',
+	})
 	password: string;
 
 	rooms?: Room[];

@@ -15,6 +15,8 @@ import { MessageDocument } from './message/schemas/message.schema';
 import { RoomDto } from './room/dto/room.dto';
 import { RoomService } from './room/room.service';
 
+const onlineUsers: string[] = []
+
 @WebSocketGateway({
 	cors: {
 		origin: '*',
@@ -32,6 +34,16 @@ export class ChatGateway implements OnGatewayConnection {
 
 	public async handleConnection(client: Socket): Promise<any> {
 		// console.log('Client connected');
+
+	}
+
+	@SubscribeMessage('AddConnectedUser')
+	async handleConnectedUser(client: Socket, payload: { username: string }): Promise<any> {
+		const { username } = payload;
+		if (username && !onlineUsers.includes(username)) {
+			onlineUsers.push(username);
+		}
+		this.server.emit('connectedUsers', onlineUsers);
 	}
 
 	@SubscribeMessage('showMyRoom')
@@ -155,4 +167,20 @@ export class ChatGateway implements OnGatewayConnection {
 		// client.emit('createdRoom', createdRoom);
 		this.server.emit('createdRoom', createdRoom);
 	}
+
+	@SubscribeMessage('logout')
+	async handleLogout(client: Socket, payload: { username: string, userId: string }): Promise<any> {
+		const { username } = payload;
+		if (username && onlineUsers.includes(username)) {
+			onlineUsers.splice(onlineUsers.indexOf(username), 1);
+		}
+		client.disconnect();
+		this.server.emit('connectedUsers', onlineUsers);
+	}
 }
+
+
+// TODO:
+// get user rooms in first and join it
+// leave user rooms in logout event
+// add user experience in frontend

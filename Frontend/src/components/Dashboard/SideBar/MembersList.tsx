@@ -1,6 +1,8 @@
 import { ReactComponent as CogIcon } from "../../../assets/icons/cog.svg";
+import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 import { ReactComponent as RightChevronIcon } from "../../../assets/icons/right-chevron-icon.svg";
 import { ChatType, UserType } from "../../../types/types";
+
 
 const MembersList: React.FC<{
 	choosenChat: ChatType;
@@ -11,10 +13,8 @@ const MembersList: React.FC<{
 	};
 	selectedUserDM: (user: ChatType) => void;
 	onlineUsers: string[];
-}> = ({ users, currentUser, choosenChat, selectedUserDM, onlineUsers }) => {
-	console.log("04967-90--0956-79");
-	console.log(onlineUsers);
-	console.log("04967-90--0956-79");
+	logoutHandler: () => void;
+}> = ({ users, currentUser, choosenChat, selectedUserDM, onlineUsers, logoutHandler }) => {
 	return (
 		<div className="d-flex h-100vh  flex-column flex-grow-1">
 			<div className="d-flex align-items-center flex-grow-1 light-dark-bg overflow-y-scroll flex-column gap-12 pt-4 pb-3 align-items-center px-3">
@@ -57,7 +57,7 @@ const MembersList: React.FC<{
 						</span>
 					</div>
 				</div>
-				<CogIcon />
+				<LogoutIcon className="cursor-pointer" width={20} height={20} onClick={logoutHandler} />
 			</div>
 		</div>
 	);
