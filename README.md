@@ -6,6 +6,9 @@
 Discord using Reactjs, Mongodb and Nestjs
 </p>
 
+![](https://github.com/kirwa-KO/discord-clone/blob/main/discord-clone-screenshot.png)
+[Video Discord Clone Preview](https://bit.ly/discord-clone)
+
 ## Technologies
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB&link=https://github.com/arihant-jain-09)](https://github.com/kirwa-KO)
 [![Nestjs](https://img.shields.io/badge/Nest-20232A?style=flat&logo=nestjs&logoColor=ED2945)](https://github.com/kirwa-KO)
