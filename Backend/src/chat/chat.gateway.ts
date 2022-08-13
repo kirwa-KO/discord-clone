@@ -1,4 +1,5 @@
 import { UseGuards } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import {
 	OnGatewayConnection,
 	SubscribeMessage,
@@ -22,18 +23,31 @@ const onlineUsers: string[] = []
 		origin: '*',
 	},
 })
-// @UseGuards(JwtAuthGuard) // need to add auth guard for socket io protection
 export class ChatGateway implements OnGatewayConnection {
 	constructor(
 		private readonly roomService: RoomService,
 		private readonly userService: UserService,
 		private readonly messageService: MessageService,
+		private readonly jwtService: JwtService,
 	) {}
 
 	@WebSocketServer() server: Server;
 
 	public async handleConnection(client: Socket): Promise<any> {
-		// console.log('Client connected');
+		console.log('Client connected');
+		if (client.handshake.auth.access_token) {
+			try {
+				// const payload = this.jwtService.verify(client.handshake.auth.access_token);
+				this.jwtService.verify(client.handshake.auth.access_token);
+			}
+			catch (err) {
+				console.log(err);
+				client.disconnect();
+			}
+		}
+		else {
+			client.disconnect();
+		}
 	}
 
 	@SubscribeMessage('AddConnectedUser')

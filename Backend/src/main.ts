@@ -22,7 +22,7 @@ async function bootstrap() {
 	SwaggerModule.setup('api', app, document);
 
 	await app.listen(5000, () => {
-		console.log('Listening on port 5000');
+		console.log('Listening on port 127.0.0.1:5000');
 	});
 }
 bootstrap();

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import RoomsList from "../components/Dashboard/SideBar/RoomsList";
 import MembersList from "../components/Dashboard/SideBar/MembersList";
@@ -140,7 +140,7 @@ const Dashboard: React.FC = () => {
 		});
 	};
 
-	const addMessageInRoomOrPrivateDM = (
+	const addMessageInRoomOrPrivateDM = useCallback((
 		roomId: string,
 		newMessage: any,
 		isRoomMesages: boolean = false,
@@ -155,7 +155,7 @@ const Dashboard: React.FC = () => {
 		} else {
 			addRoomMessage(roomId, newMessage);
 		}
-	};
+	}, []);
 
 	useEffect(() => {
 		getAllRomsAndUsersApi()
@@ -165,7 +165,11 @@ const Dashboard: React.FC = () => {
 			})
 			.catch((err) => console.log(err));
 
-		socket = io(`${process.env.REACT_APP_WEBSITE_URL}`)
+		socket = io(`${process.env.REACT_APP_WEBSITE_URL}`, {
+			auth: {
+				access_token: userInfo.access_token,
+			},
+		})
 
 		socket.on("connect", () => {
 			// console.log("connected");
@@ -222,7 +226,7 @@ const Dashboard: React.FC = () => {
 			setOnlineUsers(onlineUsers);
 		})
 
-	}, []);
+	}, [addMessageInRoomOrPrivateDM, userInfo.username, userInfo.access_token]);
 
 
 	useEffect(() => {
@@ -285,6 +289,7 @@ const Dashboard: React.FC = () => {
 								fetchedUsers[userIndexInFetchedUsers].notifications = user.notifications;
 							}
 						}
+						return null;
 					})
 					setUsers(fetchedUsers)
 				})

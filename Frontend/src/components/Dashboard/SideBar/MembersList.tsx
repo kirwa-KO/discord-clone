@@ -1,4 +1,3 @@
-import { ReactComponent as CogIcon } from "../../../assets/icons/cog.svg";
 import { ReactComponent as LogoutIcon } from "../../../assets/icons/logout.svg";
 import { ReactComponent as RightChevronIcon } from "../../../assets/icons/right-chevron-icon.svg";
 import { ChatType, UserType } from "../../../types/types";
