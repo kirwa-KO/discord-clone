@@ -2,9 +2,9 @@
   <img src="https://github.com/kirwa-KO/discord-clone/blob/main/discord-clone.svg" />
 </p>
 
-<center>
-<strong> Discord using Reactjs, Mongodb and Nestjs</strong>
-</center>
+<p align="center">
+Discord using Reactjs, Mongodb and Nestjs
+</p>
 
 ## Technologies
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB&link=https://github.com/arihant-jain-09)](https://github.com/kirwa-KO)
