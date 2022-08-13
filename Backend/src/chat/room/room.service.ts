@@ -31,8 +31,11 @@ export class RoomService {
 				HttpStatus.BAD_REQUEST,
 			);
 		}
-		user.rooms.push(room);
-		await user.save();
+
+		if (user.rooms.indexOf(room) === -1) {
+			user.rooms.push(room);
+			await user.save();
+		}
 
 		return this.roomModel.create({
 			...roomInfo,
@@ -107,8 +110,12 @@ export class RoomService {
 			});
 		}
 
-		user.rooms.push(room);
-		await user.save();
+		const ifUserAlreadyInRoom = user.rooms.find(roomId => roomId.toString() === room._id.toString());
+		if (!ifUserAlreadyInRoom) {
+			user.rooms.push(room);
+			await user.save();
+		}
+
 
 		return room;
 	}

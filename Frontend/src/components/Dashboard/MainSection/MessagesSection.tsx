@@ -1,22 +1,31 @@
 import { MessageType } from "../../../types/types";
 import moment from "moment";
+import { useEffect, useRef } from "react";
 
 // "Yesterday at 5:47 PM" */}
 
 const MessagesSection: React.FC<{
 	messages: MessageType[];
 }> = ({ messages }) => {
+	const messageListRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		messageListRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
+
 	return (
 		<div className="flex-grow-1 m-4 d-flex flex-column gap-12 overflow-y-scroll">
 			{messages.map((message: MessageType, idx) => (
 				<MessageCard
 					key={message._id + "" + idx}
-					time={moment(message.updatedAt).format("MMM D, YYYY [at] HH:mm")}
+					time={moment(message.updatedAt).format(
+						"MMM D, YYYY [at] HH:mm"
+					)}
 					sender={message.sendBy.username}
 					content={message.content}
 				/>
-			)
-			)}
+			))}
+			<div ref={messageListRef} />
 		</div>
 	);
 };

@@ -78,4 +78,15 @@ export class UserService {
 		return user.rooms;
 	}
 
+
+	async getUserRoomsByUsername(username: string): Promise<any> {
+		const user = await this.userModel.findOne({ username: username }).populate("rooms");
+		if (!user)
+			throw new HttpException(
+				'User Not exist in our database',
+				HttpStatus.BAD_REQUEST,
+			);
+		return user.rooms;
+	}
+
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import RoomsList from "../components/Dashboard/SideBar/RoomsList";
 import MembersList from "../components/Dashboard/SideBar/MembersList";
 import { ChatType, MessageType, RoomType, UserType } from "../types/types";
@@ -13,7 +13,7 @@ import MessageInput from "../components/Dashboard/MainSection/MessageInput";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const socket = io(`${process.env.REACT_APP_WEBSITE_URL}`);
+let socket: Socket;
 
 const DUMMY_MESSAGES: { [key: string]: MessageType[] } = {
 	botRoom: [
@@ -165,7 +165,10 @@ const Dashboard: React.FC = () => {
 			})
 			.catch((err) => console.log(err));
 
+		socket = io(`${process.env.REACT_APP_WEBSITE_URL}`)
+
 		socket.on("connect", () => {
+			// console.log("connected");
 			socket.emit("AddConnectedUser", { username: userInfo.username });
 		});
 
@@ -188,20 +191,30 @@ const Dashboard: React.FC = () => {
 			}
 		);
 
-		socket.on("joinedRoom", ({roomName, user}) => {
+		socket.on("joinedRoom", ({ roomName, user }) => {
 			console.log(`Congrats you joined: ${roomName}`);
 			setIsMemberOfRoom(_ => true);
-			if (roomName === chatroomref.current.name)
+			if (roomName === chatroomref.current.name) {
+				toast.info(`New Member [${user.username}] join Room ${roomName}`, {
+					position: toast.POSITION.TOP_CENTER,
+				});
 				setUsers((prevUsers: any) => [...prevUsers, user]);
+			}
 		});
 
 		socket.on("memberNotInRoom", (roomName) => {
 			console.log(`Sorry you are not in: ${roomName}`);
+			toast.error(`Sorry you are not a member on: ${roomName} but sure you can join it`, {
+				position: toast.POSITION.TOP_CENTER,
+			});
 			setIsMemberOfRoom(false);
 		});
 
 		socket.on("createdRoom", (roomData) => {
 			// console.log(roomData);
+			toast.info(`New room added: ${roomData.name}`, {
+				position: toast.POSITION.TOP_CENTER,
+			});
 			setRooms((prevRooms: any) => [...prevRooms, roomData]);
 		});
 
@@ -210,6 +223,7 @@ const Dashboard: React.FC = () => {
 		})
 
 	}, []);
+
 
 	useEffect(() => {
 		chatroomref.current = choosenChat;
@@ -261,7 +275,19 @@ const Dashboard: React.FC = () => {
 			setChoosenChat(() => ({ name: room, _id: "" }));
 			setSelectedUserDM({ _id: "", name: DM_LABEL });
 			getAllUsers()
-				.then((users) => setUsers(users))
+				.then((fetchedUsers) => {
+					users.map((user: UserType) => {
+						if (user.notifications && user.notifications > 0) {
+							const userIndexInFetchedUsers = fetchedUsers.findIndex(
+								(fetchedUser: UserType) => fetchedUser._id === user._id
+							);
+							if (userIndexInFetchedUsers !== -1) {
+								fetchedUsers[userIndexInFetchedUsers].notifications = user.notifications;
+							}
+						}
+					})
+					setUsers(fetchedUsers)
+				})
 				.catch((err) => console.log(err));
 			if (isMemberOfRoom === false) {
 				setIsMemberOfRoom(true);

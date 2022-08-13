@@ -34,7 +34,6 @@ export class ChatGateway implements OnGatewayConnection {
 
 	public async handleConnection(client: Socket): Promise<any> {
 		// console.log('Client connected');
-
 	}
 
 	@SubscribeMessage('AddConnectedUser')
@@ -44,6 +43,10 @@ export class ChatGateway implements OnGatewayConnection {
 			onlineUsers.push(username);
 		}
 		this.server.emit('connectedUsers', onlineUsers);
+		const rooms = await this.userService.getUserRoomsByUsername(username);
+		for (let i = 0; i < rooms.length; i++) {
+			client.join(rooms[i].name);
+		}
 	}
 
 	@SubscribeMessage('showMyRoom')
@@ -100,8 +103,12 @@ export class ChatGateway implements OnGatewayConnection {
 		const user = await this.userService.findUserById(userId);
 
 		if (foundedRoom) {
-			foundedRoom.members.push(user);
-			await foundedRoom.save();
+			
+			if (foundedRoom.members.indexOf(user) === -1) {
+				foundedRoom.members.push(user);
+				await foundedRoom.save();
+			}
+
 			client.join(roomName);
 			client.to(roomName).emit('joinedRoom', {
 				roomName,
@@ -178,9 +185,3 @@ export class ChatGateway implements OnGatewayConnection {
 		this.server.emit('connectedUsers', onlineUsers);
 	}
 }
-
-
-// TODO:
-// get user rooms in first and join it
-// leave user rooms in logout event
-// add user experience in frontend
