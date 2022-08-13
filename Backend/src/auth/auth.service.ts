@@ -2,7 +2,7 @@ import { Body, Injectable, UploadedFile } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { UserDto } from 'src/user/dto/user.dto';
-import { UserDocument } from 'src/user/schemas/user.schema';
+import { UserDocument } from 'src/user/schemas/user.schemas';
 import { UserService } from '../user/user.service';
 import { PayloadInterface } from './interfaces/Payload.interface';
 

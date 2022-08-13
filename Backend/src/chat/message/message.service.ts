@@ -3,9 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserService } from 'src/user/user.service';
 import { RoomService } from '../room/room.service';
-import { RoomDocument } from '../room/schemas/room.schema';
+import { RoomDocument } from '../room/schemas/room.schemas';
 import { MessageDto } from './dto/message.dto';
-import { Message, MessageDocument } from './schemas/message.schema';
+import { Message, MessageDocument } from './schemas/message.schemas';
 
 @Injectable()
 export class MessageService {

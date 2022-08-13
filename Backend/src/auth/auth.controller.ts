@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 // import { FileInterceptor } from '@nestjs/platform-express';
 import { UserDto } from 'src/user/dto/user.dto';
 import { AuthService } from './auth.service';
@@ -16,7 +16,6 @@ export class AuthController {
 	}
 
 	@Post('register')
-	// @UseInterceptors(FileInterceptor("image"))
 	async register(@Body() userInfo: UserDto) {
 		return (this.authService.register(userInfo));
 	}

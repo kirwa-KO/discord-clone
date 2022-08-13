@@ -14,11 +14,9 @@ Discord using Reactjs, Mongodb and Nestjs
 [![Mongodb](https://img.shields.io/badge/Swagger-20232A?style=flat&logo=swagger&logoColor=85E92C)](https://github.com/kirwa-KO)
 
 
-
-
-
 ## About
 **Discord** with **Features** like realtime chat app, **Private chat**, **Rooms chat**
+- **Realtime** **notifications** when a **room created** or a **user join a room**.
 - React is used along with [react-toastify](https://www.npmjs.com/package/react-toastify) to **user friendly** front-end.
 - React Routing with Error handling and Discord Loading between pages.
 - **Realtime notification** for rooms and also for private direct messages

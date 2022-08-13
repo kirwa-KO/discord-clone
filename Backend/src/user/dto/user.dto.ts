@@ -7,8 +7,8 @@ import {
 	IsOptional,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
-import { Room } from 'src/chat/room/schemas/room.schema';
-import { Message } from 'src/chat/message/schemas/message.schema';
+import { Room } from 'src/chat/room/schemas/room.schemas';
+import { Message } from 'src/chat/message/schemas/message.schemas';
 
 export class UserDto {
 	@IsString()

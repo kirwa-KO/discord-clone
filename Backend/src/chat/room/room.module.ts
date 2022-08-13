@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Room, RoomSchema } from './schemas/room.schema';
+import { Room, RoomSchema } from './schemas/room.schemas';
 import { UserModule } from 'src/user/user.module';
 
 @Module({

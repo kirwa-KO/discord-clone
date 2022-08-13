@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserService } from 'src/user/user.service';
 import { RoomDto } from './dto/room.dto';
-import { Room, RoomDocument } from './schemas/room.schema';
+import { Room, RoomDocument } from './schemas/room.schemas';
 
 @Injectable()
 export class RoomService {

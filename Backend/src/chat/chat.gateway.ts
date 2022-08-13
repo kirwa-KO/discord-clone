@@ -12,7 +12,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import getRoomName from 'src/helpers/getRoomName';
 import { UserService } from 'src/user/user.service';
 import { MessageService } from './message/message.service';
-import { MessageDocument } from './message/schemas/message.schema';
+import { MessageDocument } from './message/schemas/message.schemas';
 import { RoomDto } from './room/dto/room.dto';
 import { RoomService } from './room/room.service';
 

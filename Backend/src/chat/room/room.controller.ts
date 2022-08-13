@@ -4,7 +4,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { UserService } from 'src/user/user.service';
 import { RoomDto } from './dto/room.dto';
 import { RoomService } from './room.service';
-import { RoomDocument } from './schemas/room.schema';
+import { RoomDocument } from './schemas/room.schemas';
 
 @ApiBearerAuth()
 @Controller('room')

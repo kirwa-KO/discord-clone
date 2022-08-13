@@ -4,7 +4,7 @@ import { hash } from 'bcrypt';
 import { Model } from 'mongoose';
 import { SaltOrRounds } from 'src/helpers/HashingConfig';
 import { UserDto } from './dto/user.dto';
-import { User, UserDocument } from './schemas/user.schema';
+import { User, UserDocument } from './schemas/user.schemas';
 
 @Injectable()
 export class UserService {

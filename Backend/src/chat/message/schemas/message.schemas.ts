@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { Document, ObjectId } from "mongoose";
-import { UserDocument } from "src/user/schemas/user.schema";
-import { RoomDocument } from "../../room/schemas/room.schema";
+import { UserDocument } from "src/user/schemas/user.schemas";
+import { RoomDocument } from "../../room/schemas/room.schemas";
 
 export type MessageDocument = Message & Document<ObjectId>;
 

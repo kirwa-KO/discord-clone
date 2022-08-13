@@ -11,10 +11,10 @@ async function bootstrap() {
 	app.setGlobalPrefix('api');
 
 	const config = new DocumentBuilder()
-		.setTitle('Bringo Api')
+		.setTitle('Discord Clone Api')
 		.setDescription('This is the api for bringo app')
 		.setVersion('1.0')
-		.addTag('bringo')
+		.addTag('discord')
 		.addBearerAuth()
 		.build();
 
