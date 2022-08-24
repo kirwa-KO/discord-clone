@@ -16,7 +16,7 @@ import { JwtStrategy } from './startegy/jwt.strategy';
 			secret: jwtConstants.secret,
 			// ! Todo: you need to add expiration date to token
 			// ! uncomment this next line
-			// signOptions: { expiresIn: '3600s' }
+			signOptions: { expiresIn: '3600s' }
 		})
 	],
 	providers: [AuthService, LocalStrategy, JwtStrategy],
